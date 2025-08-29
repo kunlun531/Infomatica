@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="" width="150px">
+  <img src="./assets/InfoSeek_logo.png" width="150px">
 </div>
 <h1 align="center">Open Data Synthesis For Deep Research</h1>
 
@@ -11,7 +11,7 @@
     <a href="https://opensource.org/license/apache-2-0"><img alt="Build" src="https://img.shields.io/badge/LICENSE-Apache2.0-green.svg">
 </p>
 
-## :mag_right: Roadmap
+## 🔎 Roadmap
 **InfoSeek**  is currently under active development, with resources and prototypes continuously being published at this repository.
 - [x] Initial Codes Release
 - [x] Dataset Release
@@ -28,14 +28,13 @@ We propose **InfoSeek**, a scalable data synthesis framework for constructing st
 
 
 
-### Example:
-**Question 1:** What is a species of bird that was named by a person employed under his father between 1818 and 1824, whose wife was a British artist, and which has three subspecies and body length is generally no more than 6 inches?
+### Example 1:
+**Question:** What is a species of bird that was named by a person employed under his father between 1818 and 1824, whose wife was a British artist, and which has three subspecies and body length is generally no more than 6 inches?
 
 **Answer:** Russet sparrow
 
 <details>
   <summary>Tree Structure</summary>
-
 ```
 {
   "root": {
@@ -87,10 +86,14 @@ We propose **InfoSeek**, a scalable data synthesis framework for constructing st
 ```
 </details>
 
-**Question 2:** What is a women's football team whose first goals in the 2. Bundesliga were scored by a player born in Korogocho, who was discovered and developed by the Mathare Youth Sports Association?
+### Example 2:
+
+**Question:** What is a women's football team whose first goals in the 2. Bundesliga were scored by a player born in Korogocho, who was discovered and developed by the Mathare Youth Sports Association?
 
 **Answer:** SV Werder Bremen (women)
 
+<details>
+    <summary>Tree Structure</summary>
 ```
 {
   "root": {
@@ -130,14 +133,17 @@ We propose **InfoSeek**, a scalable data synthesis framework for constructing st
       │
       │── [claim] "was born in" ──> (D: Korogocho)
 ```
+</details>
 
 
 ## 📊 Performance
-Model trained on InfoSeek and our framework shows strong performances on traditional multi-hop benchmarks.
+Model trained on InfoSeek and our framework shows strong performances on traditional multi-hop benchmarks:
 
+<img src="./assets/results.png" width="800">
 
 Our 3B model shows competitive results on [BrowseComp-Plus](https://github.com/texttron/BrowseComp-Plus):
 
+<img src="./assets/browsecomp_plus.png" width="800">
 
 ## 📄 License
 The code and data accompanying this work are released under the [Apache License, Version 2.0](./LICENSE). This permits use, modification, and distribution for research and commercial purposes, provided that proper attribution is given and the terms of the license are followed.
