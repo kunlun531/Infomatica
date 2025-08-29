@@ -13,13 +13,13 @@
 
 ## 🔎 Roadmap
 **InfoSeek**  is currently under active development, with resources and prototypes continuously being published at this repository.
-- [x] Initial Codes Release
-- [x] Dataset Release
-- [x] Data Construction Codes Release
-- [x] SFT Training Code Release
-- [x] Technical Report Release
-- [ ] RL Training Code Release
-- [ ] InfoSeeker Model Release
+- [x] Initial Codes
+- [x] Dataset
+- [x] Data Construction Codes
+- [x] SFT Training Code
+- [x] Technical Report
+- [ ] RL Training Code
+- [ ] InfoSeeker Model
 
 ## 🔆 Overview
 We propose **InfoSeek**, a scalable data synthesis framework for constructing structurally complex Deep Research tasks. InfoSeek designs a dual-agent system to recursively build a *Research Tree* by mining entities and relations from large-scale text, and blurring itermediate vertices to ensure they form valid sub-problems. The agent then transform these trees into natural language questions whose solutions require traversing the entire hierarchy. Using InfoSeek pipeline, we construct a high-quality, complexity-controllable, and intrinsically verifiable dataset.
@@ -35,6 +35,7 @@ We propose **InfoSeek**, a scalable data synthesis framework for constructing st
 
 <details>
   <summary>Tree Structure</summary>
+  
 ```
 {
   "root": {
@@ -79,8 +80,8 @@ We propose **InfoSeek**, a scalable data synthesis framework for constructing st
  │    │── [claim] "wife was" ──> (F: Elizabeth Gould)
  │
  │
- │
  │── [claim] "has three subspecies"
+ │
  │
  │── [claim] "body length is generally no more than 6 inches"
 ```
@@ -94,6 +95,7 @@ We propose **InfoSeek**, a scalable data synthesis framework for constructing st
 
 <details>
     <summary>Tree Structure</summary>
+  
 ```
 {
   "root": {
