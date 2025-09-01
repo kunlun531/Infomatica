@@ -6,14 +6,12 @@
 <p align="center">
     <a href="https://www.google.com"><img alt="Build" src="http://img.shields.io/badge/arXiv-InfoSeek-B31B1B.svg?logo=arxiv"></a>
     <a href="https://github.com/VectorSpaceLab/InfoSeek"><img alt="Build" src="https://img.shields.io/badge/Github-InfoSeek-blue?logo=github"></a>
-    <a href="https://huggingface.co"><img alt="Build" src="https://img.shields.io/badge/🤗 Datasets-InfoSeek-yellow"></a>
-    <a href="https://huggingface.co"><img alt="Build" src="https://img.shields.io/badge/🤗 Model-InfoSeek-yellow"></a>
+    <a href="https://huggingface.co/datasets/Lk123/InfoSeek"><img alt="Build" src="https://img.shields.io/badge/🤗 Datasets-InfoSeek-yellow"></a>
     <a href="https://opensource.org/license/apache-2-0"><img alt="Build" src="https://img.shields.io/badge/LICENSE-Apache2.0-green.svg">
 </p>
 
 ## 🔎 Roadmap
 **InfoSeek**  is currently under active development, with resources and prototypes continuously being published at this repository.
-- [x] Initial Codes
 - [x] Dataset
 - [x] Data Construction Codes
 - [x] SFT Training Code
@@ -24,9 +22,9 @@
 ## 🔆 Overview
 We propose **InfoSeek**, a scalable data synthesis framework for constructing structurally complex Deep Research tasks. InfoSeek designs a dual-agent system to recursively build a *Research Tree* by mining entities and relations from large-scale text, and blurring itermediate vertices to ensure they form valid sub-problems. The agent then transform these trees into natural language questions whose solutions require traversing the entire hierarchy. Using InfoSeek pipeline, we construct a high-quality, complexity-controllable, and intrinsically verifiable dataset.
 
-## 📋 InfoSeek Datacard
+## 📋 InfoSeek Data
 
-
+We released [InfoSeek dataset](https://huggingface.co/datasets/Lk123/InfoSeek) on 🤗
 
 ### Example 1:
 **Question:** What is a species of bird that was named by a person employed under his father between 1818 and 1824, whose wife was a British artist, and which has three subspecies and body length is generally no more than 6 inches?
