@@ -150,7 +150,8 @@ The code and data accompanying this work are released under the [Apache License,
 
 ## ❤️ Citing Us
 If you find this repository or our work useful, please consider giving a star ⭐ and or citing our work, which would be greatly appreciated:
-```@misc{xia2025opendatasynthesisdeep,
+```
+@misc{xia2025opendatasynthesisdeep,
       title={Open Data Synthesis For Deep Research}, 
       author={Ziyi Xia and Kun Luo and Hongjin Qian and Zheng Liu},
       year={2025},
