@@ -150,10 +150,13 @@ The code and data accompanying this work are released under the [Apache License,
 
 ## ❤️ Citing Us
 If you find this repository or our work useful, please consider giving a star ⭐ and or citing our work, which would be greatly appreciated:
-```bibtex
-@article{,
-  title={InfoSeek},
-  author={},
-  journal={arXiv preprint arXiv:},
-  year={2025}
+```@misc{xia2025opendatasynthesisdeep,
+      title={Open Data Synthesis For Deep Research}, 
+      author={Ziyi Xia and Kun Luo and Hongjin Qian and Zheng Liu},
+      year={2025},
+      eprint={2509.00375},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2509.00375}, 
 }
+```
