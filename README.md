@@ -4,7 +4,7 @@
 <h1 align="center">Open Data Synthesis For Deep Research</h1>
 
 <p align="center">
-    <a href="https://www.google.com"><img alt="Build" src="http://img.shields.io/badge/arXiv-InfoSeek-B31B1B.svg?logo=arxiv"></a>
+    <a href="https://arxiv.org/abs/2509.00375"><img alt="Build" src="http://img.shields.io/badge/arXiv-InfoSeek-B31B1B.svg?logo=arxiv"></a>
     <a href="https://github.com/VectorSpaceLab/InfoSeek"><img alt="Build" src="https://img.shields.io/badge/Github-InfoSeek-blue?logo=github"></a>
     <a href="https://huggingface.co/datasets/Lk123/InfoSeek"><img alt="Build" src="https://img.shields.io/badge/🤗 Datasets-InfoSeek-yellow"></a>
     <a href="https://opensource.org/license/apache-2-0"><img alt="Build" src="https://img.shields.io/badge/LICENSE-Apache2.0-green.svg">
