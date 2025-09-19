@@ -4,7 +4,7 @@
 </div>
 <h1 align="center"> 🔍📚 Informatica: Open and Scalable Foundations for Deep Research System</a></h1>
 
-
+<div align="center">
 <a href="https://huggingface.co/collections/TommyChien/informatica-68ccc0b35674571aa007d961"><img alt="Build" src="https://img.shields.io/badge/🤗 Models-Infomatica-blue"></a>
 <a href="https://huggingface.co/datasets/Lk123/InfoSeek"><img alt="Build" src="https://img.shields.io/badge/🤗 Datasets-Infomatica-yellow"></a>
 <a href="https://github.com/"><img alt="License" src="https://img.shields.io/badge/Apache-2.0-green"></a>
