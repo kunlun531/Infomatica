@@ -1,8 +1,9 @@
 
-# <div align="center">Informatica: Open and Scalable Foundations for Deep Research System<div>
+<div align="center"> 
+<img src="assets/image.png" width="120px">
+</div>
+<h1 align="center"> 🔍📚 Informatica: Open and Scalable Foundations for Deep Research System</a></h1>
 
-<div align="center">
-<p><strong>Empowering Deep Search with an Open-Source and Scalable Knowledge Framework!</strong></p>
 
 <a href="https://huggingface.co/collections/TommyChien/informatica-68ccc0b35674571aa007d961"><img alt="Build" src="https://img.shields.io/badge/🤗 Models-Infomatica-blue"></a>
 <a href="https://huggingface.co/datasets/Lk123/InfoSeek"><img alt="Build" src="https://img.shields.io/badge/🤗 Datasets-Infomatica-yellow"></a>
