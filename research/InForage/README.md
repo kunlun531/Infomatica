@@ -1,3 +1,7 @@
+<div align="center"> 
+<img src="assets/image.png" width="150px">
+</div>
+
 <div align="center">
 <h1>🔍 InForage: Scent of Knowledge</h1>
 <h3>Optimizing Search-Enhanced Reasoning with Information Foraging</h3>

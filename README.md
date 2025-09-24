@@ -37,7 +37,7 @@ Our team continuously explores various aspects of deep research problems, from f
 
 
 ## 📰 News
-[2025/09/19]🎉 Our paper [InForage](https://arxiv.org/abs/2505.09316) has been accepted by NeurIPS 2025 as a **Spotlight** paper! Codes will be released here soon.
+[2025/09/19]🎉 Our paper [InForage](https://arxiv.org/abs/2505.09316) has been accepted by NeurIPS 2025 as a **Spotlight** paper! Codes is available [here](https://github.com/VectorSpaceLab/Infomatica/tree/main/research/InForage).
 
 
 [2025/09/17]🔥 We have released a large-scale dataset for deep research tasks, named [InfoSeek](https://huggingface.co/datasets/Lk123/InfoSeek).
