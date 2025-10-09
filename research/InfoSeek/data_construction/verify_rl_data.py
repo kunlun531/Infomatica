@@ -6,64 +6,63 @@ from openai import OpenAI
 import os
 
 # NOTE: Input research tree JSONL file.
-INPUT_FILE = "/share/project/kunluo/Datasets/Reasoning/ConstructedTreeData/0724--DeepSeek--hopnum5to8--Num18K.jsonl"
+INPUT_FILE = "path-to-research-tree.jsonl"
 # Output path
-PASS_FILE = "/share/project/kunluo/Datasets/Reasoning/ConstructedTreeData/DiffFilterPass--0724--DeepSeek--hopnum5to8--Num18K.jsonl"
-FAIL_FILE = "/share/project/kunluo/Datasets/Reasoning/ConstructedTreeData/DiffFilterFail--0724--DeepSeek--hopnum5to8--Num18K.jsonl"
+PASS_FILE = "./Passed.jsonl"
+FAIL_FILE = "./Failed.jsonl"
 
-# --- API 初始化函数 (每个子进程独立调用) ---
+# --- API Initialization Function (called by each subprocess) ---
 def init_client():
-    """初始化并返回一个OpenAI客户端实例。"""
+    # NOTE: Initializes and returns an OpenAI client instance. Here we use deepseek as an example, please change to your own client and API key.
     return OpenAI(
-        api_key="sk-fd5d5a4458064f76a5cc34e9b386c17e", # 请确保这是一个有效的API Key
+        api_key="sk-xxxx", # Please ensure this is a valid API Key
         base_url="https://api.deepseek.com"
     )
 
-# --- 评估Prompt模板 (内容保持不变) ---
+
+# NOTE: You can change the promot to be more strict.
 PROMPT_TEMPLATE = """
-**Your Role:** You are a pragmatic AI Dataset Quality Analyst. Your task is to evaluate complex, multi-hop search-based questions to determine if they are well-formed and genuinely require a multi-step search process to solve. **The dataset aims to train LLM to conduct Deep Research.**
+**Your Role:** You are a pragmatic AI Dataset Quality Analyst. Your task is to evaluate complex, multi-hop search-based questions to determine if they are good candidates for a dataset. **The dataset aims to train an LLM to conduct Deep Research.**
 
-**Primary Objective:** Your goal is to filter for high-quality questions that cannot be easily answered by an LLM's internal knowledge and instead encourage a step-by-step investigation using a search tool. Aim for a balanced evaluation (not too strict), targeting a pass rate of approximately 40%.
+**Primary Objective:** Your goal is to identify high-quality questions that are best answered through a step-by-step investigation using a search tool, rather than relying solely on an LLM's internal knowledge.
 
-### **Key Evaluation Criteria**
-Evaluate each question based on the following principles. A strong question should generally meet these standards.
+### **Key Evaluation Guidelines**
+Evaluate each question based on the following principles. A good question should generally align with these guidelines.
 
-1.  **Meaningful Multi-Step Process:**
-    *   The question should require **more than two distinct reasoning or search steps** to solve.
-    *   Most of these steps must necessitate an **external search**, not just rely on common knowledge.
+1.  **Multi-Step Nature:**
+    *   The question should naturally break down into several logical steps to find the answer.
+    *   Some of these steps should require an **external search**. It's acceptable if other steps involve reasoning, calculation, or synthesis based on the retrieved information.
 
-2.  **Logical Chain:**
-    *   The reasoning process must be cohesive. Each step should logically depend on the information found in the previous one. Avoid questions that are just a list of disconnected facts.
+2.  **Logical Connection:**
+    *   The steps should be interconnected. Information from an earlier step is often needed to formulate the query for a later step. Avoid questions that are just a list of disconnected facts.
 
-3.  **Clarity and Uniqueness:**
-    *   The question must be phrased clearly, without ambiguity or grammatical errors.
-    *   It must point to a **single, verifiable answer**. Questions with subjective or multiple correct answers should be rejected.
+3.  **Clarity and Verifiability:**
+    *   The question must be phrased clearly and be understandable.
+    *   It should lead to a clear, fact-based answer. The answer can be a specific entity, a number, a date, or a concise summary/list. Questions that are purely subjective or opinion-based should be avoided.
 
-4.  **Resistance to Shortcuts (Leakage Test):**
-    *   This is a critical check. The question **fail** if a single, well-crafted search query can bypass the intended multi-step path and lead directly to the answer. Pay attention to "information leakage."
+4.  **Encourages a Multi-Step Path (Shortcut Test):**
+    *   Consider if the question can be easily answered with a single, simple search query.
+    *   A question is stronger if a multi-step process is the more **natural or reliable** way to arrive at the answer. It is acceptable if a highly complex, expert-level query could find a shortcut, as long as it isn't trivial to do so.
 
 ### **Your Output Format**
-You should return your evaluation using the following **JSON-style structure strictly**:
+You must return your evaluation using the following **JSON structure strictly**:
 ```json
 {{
   "Question": "{question}",
-  "Analysis": "[Concise justification referencing the guidelines above.]",
+  "Analysis": "[Provide a concise justification for your decision, referencing the guidelines above.]",
   "Decision": "[Pass or Fail]"
 }}
-```
 """
 
-# --- 多线程工作函数：评估单个数据项 ---
+# --- Multiprocessing Worker Function: Evaluate a single data item ---
 def evaluate_data_item(index_data_tuple):
     """
-    对单个数据项进行API评估，具备全面的错误处理机制。
-    任何失败都会导致返回'Fail'决策。
+    Evaluates a single data item via API call with comprehensive error handling.
+    Any failure will result in a 'Fail' decision.
     """
     index, data_item = index_data_tuple
     
-    # 最终的安全网，捕获任何意料之外的错误
     try:
-        # 安全地提取问题
         question = data_item.get('root', {}).get('question')
         if not question:
             print(f"[{index+1}] ❌ FAIL: Question is missing or empty in data item.")
@@ -75,23 +74,22 @@ def evaluate_data_item(index_data_tuple):
         print(f"[{index+1}] 🟡 API-Eval Start: \"{question[:60].strip()}...\"")
         start_time = time.time()
 
+        # NOTE: Change to your own API client.
         response = client.chat.completions.create(
             model="deepseek-chat",
             messages=[{"role": "user", "content": user_content}],
             stream=False,
-            temperature=0.3,  # 使用较低温度以获得更稳定的JSON输出
+            temperature=0.5,
         )
 
         result_text = response.choices[0].message.content.strip()
         elapsed = time.time() - start_time
         
-        # 尝试解析API返回的JSON结果
         try:
             if result_text.startswith("```json"):
                 result_text = result_text[7:-3].strip()
-            
             evaluation_json = json.loads(result_text)
-            # 规范化Decision字段，确保只有"Pass"才算通过
+            # Normalize the Decision field, ensuring only "Pass" counts as a pass
             decision = evaluation_json.get("Decision", "Fail").strip().capitalize()
             if decision != "Pass":
                 decision = "Fail"
@@ -109,12 +107,11 @@ def evaluate_data_item(index_data_tuple):
         traceback.print_exc()
         return {'original_data': data_item, 'decision': 'Fail', 'error': str(e)}
 
-# --- 主函数 ---
+# --- Main Function ---
 def main():
     main_start_time = time.time()
     
     items_to_evaluate_api = []
-    hop_fail_list = []
     parsing_fail_count = 0
 
     print(f"📖 Step 1: Reading and pre-filtering data from {INPUT_FILE}...")
@@ -126,14 +123,7 @@ def main():
                     continue
                 try:
                     data_item = json.loads(line)
-                    # 安全地获取hop_num，如果不存在则默认为0
-                    hop_num = data_item.get('hop_num', 0)
-                    
-                    # 预筛选：判断hop_num
-                    if hop_num <= 2:
-                        hop_fail_list.append(data_item)
-                    else:
-                        items_to_evaluate_api.append(data_item)
+                    items_to_evaluate_api.append(data_item)
                 except json.JSONDecodeError:
                     print(f"⚠️ WARNING: Skipping malformed JSON on line {i+1}.")
                     parsing_fail_count += 1
@@ -142,23 +132,16 @@ def main():
         return
 
     print("📊 Pre-filtering complete.")
-    print(f"  - {len(hop_fail_list)} items REJECTED (hop_num <= 2).")
     print(f"  - {parsing_fail_count} lines SKIPPED due to JSON parsing errors.")
     print(f"  - {len(items_to_evaluate_api)} items will be sent for API evaluation.")
-
-    # 将因hop_num不足而失败的数据首先写入Fail文件 (覆盖模式)
-    print(f"💾 Writing {len(hop_fail_list)} hop-filtered items to {FAIL_FILE}...")
-    with open(FAIL_FILE, 'w', encoding='utf-8') as f_fail:
-        for item in hop_fail_list:
-            f_fail.write(json.dumps(item, ensure_ascii=False) + '\n')
             
     if not items_to_evaluate_api:
         print("\n✅ No items remaining for API evaluation. Process finished.")
         return
 
-    # 步骤2: 使用多线程调用API进行评估
+    # Step 2: Use multiprocessing to call the API for evaluation
     indexed_items = list(enumerate(items_to_evaluate_api))
-    process_num = 200  # 使用的进程数
+    process_num = 100  # Number of processes to use
     print(f"\n🚀 Step 2: Starting parallel API evaluation for {len(indexed_items)} items using {process_num} processes...")
 
     with Pool(processes=process_num) as pool:
@@ -167,11 +150,11 @@ def main():
     print("\n✅ API evaluation complete.")
     print(f"💾 Step 3: Sorting and saving API results...")
 
-    # 步骤3: 根据API评估结果，将数据分别写入Pass和Fail文件
+    # Step 3: Sort and write data to Pass and Fail files based on API evaluation results
     api_pass_count = 0
     api_fail_count = 0
     with open(PASS_FILE, 'w', encoding='utf-8') as f_pass, \
-         open(FAIL_FILE, 'a', encoding='utf-8') as f_fail:  # 追加模式写入Fail文件
+         open(FAIL_FILE, 'a', encoding='utf-8') as f_fail:  # Append mode for the Fail file
         
         for result in results:
             if result and result.get('decision') == 'Pass':
@@ -181,15 +164,14 @@ def main():
                 f_fail.write(json.dumps(result['original_data'], ensure_ascii=False) + '\n')
                 api_fail_count += 1
 
-    # --- 最终总结 ---
-    total_fail_count = len(hop_fail_list) + api_fail_count
+    # --- Final Summary ---
+    total_fail_count = api_fail_count
     total_processed = api_pass_count + total_fail_count
     
     print("\n--- FINAL SUMMARY ---")
     print(f"  - Total items processed: {total_processed}")
     print(f"  - Passed (API eval): {api_pass_count}")
     print(f"  - Failed (Total): {total_fail_count}")
-    print(f"    - Failed by hop_num <= 3: {len(hop_fail_list)}")
     print(f"    - Failed by API eval / Error: {api_fail_count}")
     print(f"  - Skipped (Malformed JSON): {parsing_fail_count}")
     print("  --------------------")
